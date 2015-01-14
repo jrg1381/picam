@@ -1,0 +1,23 @@
+﻿@model IEnumerable<RasPiCam.Models.Video>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div>
+    <h1>Test page</h1>
+    <table>
+        @foreach (var video in Model)
+        {
+            <tr>
+                <td>@video.Filename</td>
+                <td>@video.Size</td>
+            </tr>
+        }
+    </table>
+</div>
+</body>
+</html>
