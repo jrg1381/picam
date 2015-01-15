@@ -1,25 +1,18 @@
 ﻿@model IEnumerable<RasPiCam.Models.Video>
 
-<!DOCTYPE html>
+@{
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Test page";
+}
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-    <h1>Test page</h1>
-    <table>
-        @foreach (var video in Model)
-        {
-            <tr>
-                <td>@video.Filename</td>
-                <td>@video.Size</td>
-                <td>@video.Timestamp</td>
-                <td>@video.Url</td>
-            </tr>
-        }
-    </table>
-</div>
-</body>
-</html>
+<table>
+    @foreach (var video in Model)
+    {
+        <tr>
+            <td>@video.Filename</td>
+            <td>@video.Size</td>
+            <td>@video.Timestamp</td>
+            <td>@video.Url</td>
+        </tr>
+    }
+</table>
