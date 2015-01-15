@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RasPiCam.Models
 {
-    public class Video
+    public class Video : IVideo
     {
         private readonly string m_name;
         private readonly long m_filesize;

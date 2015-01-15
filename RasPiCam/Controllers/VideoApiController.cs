@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using Microsoft.WindowsAzure;
@@ -12,12 +13,19 @@ namespace RasPiCam.Controllers
         private const string c_blobContainer = "data";
 
         [AcceptVerbs("GET")]
-        public System.Web.Http.Results.JsonResult<List<Video>> Videos()
+        public System.Web.Http.Results.JsonResult<List<IVideo>> Videos()
         {
-            var videosFound = new List<Video>();
+            var videosFound = new List<IVideo>();
 
             // Retrieve storage account from connection string.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            if (cloudStorageConnectionString == null)
+            {
+                videosFound.Add(new Video("01-20101201121308.avi",44,new Uri("http://foo/")));
+                return Json(videosFound);
+            }
+
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference(c_blobContainer);
 

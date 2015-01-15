@@ -13,10 +13,9 @@
     function drawRow(rowData) {
         var row = $("<tr />");
         $("#video-table").append(row);
-        row.append($("<td>" + rowData.Filename + "</td>"));
+        row.append($("<td>" + "<a href=\"" + rowData.Url + "\">" + rowData.Filename + "</a>" + "</td>"));
         row.append($("<td>" + rowData.Size + "</td>"));
         row.append($("<td>" + rowData.Timestamp + "</td>"));
-        row.append($("<td>" + rowData.Url + "</td>"));
     }
 
     $(document).ready(function() {
@@ -29,6 +28,11 @@
     });
 </script>
 
-<table id="video-table">
+<table id="video-table" class="table">
+    <tr>
+        <td>Filename</td>
+        <td>Size</td>
+        <td>Timestamp</td>
+    </tr>
     <tr/>
 </table>
