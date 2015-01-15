@@ -22,6 +22,9 @@
         $.ajax({
             url: "/api/VideoApi/Videos",
             success: function (data) {
+                data.sort(function(a, b) {
+                    return (a["Timestamp"] > b["Timestamp"]) ? 1 : ((a["Timestamp"] < b["Timestamp"]) ? -1 : 0);
+                });
                 drawTable(data);
             }
         });

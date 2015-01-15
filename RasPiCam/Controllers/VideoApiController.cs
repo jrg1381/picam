@@ -22,6 +22,8 @@ namespace RasPiCam.Controllers
             if (cloudStorageConnectionString == null)
             {
                 videosFound.Add(new Video("01-20101201121308.avi",44,new Uri("http://foo/")));
+                videosFound.Add(new Video("01-20131201121308.avi", 44, new Uri("http://foo/")));
+                videosFound.Add(new Video("01-20111201121308.avi", 44, new Uri("http://foo/")));
                 return Json(videosFound);
             }
 
