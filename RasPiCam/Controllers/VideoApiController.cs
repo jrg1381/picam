@@ -1,28 +1,21 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Web.Http;
 using Microsoft.WindowsAzure;
-using RasPiCam.Models;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using RasPiCam.Models;
 
 namespace RasPiCam.Controllers
 {
-    public class DefaultController : Controller
+    public class VideoApiController : ApiController
     {
         private const string c_blobContainer = "data";
 
-        // GET: Default
-        public ActionResult Index()
+        [AcceptVerbs("GET")]
+        public System.Web.Http.Results.JsonResult<List<Video>> Videos()
         {
-            return View(VideosFromBlobStore().ToList());
-        }
+            var videosFound = new List<Video>();
 
-        private IEnumerable<Video> VideosFromBlobStore()
-        {
             // Retrieve storage account from connection string.
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
@@ -32,8 +25,10 @@ namespace RasPiCam.Controllers
             {
                 var blockBlob = item as CloudBlockBlob;
                 if (blockBlob == null) continue;
-                yield return new Video(blockBlob.Name, blockBlob.Properties.Length, blockBlob.SnapshotQualifiedUri);
+                videosFound.Add(new Video(blockBlob.Name, blockBlob.Properties.Length, blockBlob.SnapshotQualifiedUri));
             }
+
+            return Json(videosFound);
         }
     }
 }
