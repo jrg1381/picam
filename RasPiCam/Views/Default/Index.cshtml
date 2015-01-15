@@ -1,27 +1,34 @@
-﻿@model IEnumerable<RasPiCam.Models.Video>
-
-@{
+﻿@{
     Layout = "~/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Test page";
 }
 
 <script>
-    $.ajax({
-        url: "/api/VideoApi/Videos",
-        success: function (data) {
-            alert("hello");
+    function drawTable(data) {
+        for (var i = 0; i < data.length; i++) {
+            drawRow(data[i]);
         }
+    }
+
+    function drawRow(rowData) {
+        var row = $("<tr />");
+        $("#video-table").append(row);
+        row.append($("<td>" + rowData.Filename + "</td>"));
+        row.append($("<td>" + rowData.Size + "</td>"));
+        row.append($("<td>" + rowData.Timestamp + "</td>"));
+        row.append($("<td>" + rowData.Url + "</td>"));
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            url: "/api/VideoApi/Videos",
+            success: function (data) {
+                drawTable(data);
+            }
+        });
     });
 </script>
 
-<table>
-    @foreach (var video in Model)
-    {
-        <tr>
-            <td>@video.Filename</td>
-            <td>@video.Size</td>
-            <td>@video.Timestamp</td>
-            <td>@video.Url</td>
-        </tr>
-    }
+<table id="video-table">
+    <tr/>
 </table>
