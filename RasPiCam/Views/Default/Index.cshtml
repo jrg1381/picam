@@ -5,6 +5,15 @@
     ViewBag.Title = "Test page";
 }
 
+<script>
+    $.ajax({
+        url: "/api/VideoApi/Videos",
+        success: function (data) {
+            alert("hello");
+        }
+    });
+</script>
+
 <table>
     @foreach (var video in Model)
     {
