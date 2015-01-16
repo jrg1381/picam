@@ -6,7 +6,6 @@ namespace RasPiCam.Models
 {
     public interface IVideo
     {
-        string Filename { get; }
         long Size { get; }
         DateTime Timestamp { get; }
         IDictionary<string,string> Metadata { get; }
