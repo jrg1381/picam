@@ -153,7 +153,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="AzureBlob\BlobEnumerator.cs" />
+    <Compile Include="AzureBlob\BlobEnumeratorFactory.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="AzureBlob\IBlobEnumerator.cs" />
+    <Compile Include="AzureBlob\MockBlobEnumerator.cs" />
     <Compile Include="Controllers\VideoApiController.cs" />
     <Compile Include="Models\IVideo.cs" />
     <Compile Include="Models\Video.cs" />
