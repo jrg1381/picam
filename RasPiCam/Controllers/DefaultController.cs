@@ -13,8 +13,6 @@ namespace RasPiCam.Controllers
 {
     public class DefaultController : Controller
     {
-        private const string c_blobContainer = "data";
-
         // GET: Default
         public ActionResult Index()
         {
