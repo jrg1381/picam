@@ -18,5 +18,10 @@ namespace RasPiCam.Controllers
         {
             return View();
         }
+
+        public ActionResult Video(string id)
+        {
+            return Redirect("/");
+        }
     }
 }

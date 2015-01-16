@@ -13,7 +13,7 @@
     function drawRow(rowData, tableId) {
         var row = $("<tr />");
         $(tableId).append(row);
-        row.append($("<td>" + "<a href=\"" + rowData.Url + "\">" + rowData.Filename + "</a>" + "</td>"));
+        row.append($("<td>" + "<a href=\"/Video/" + rowData.Id + "\">" + rowData.Filename + "</a>" + "</td>"));
         row.append($("<td>" + rowData.Size + "</td>"));
         row.append($("<td>" + rowData.Timestamp + "</td>"));
     }

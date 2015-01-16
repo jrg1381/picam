@@ -3,7 +3,7 @@ using RasPiCam.Models;
 
 namespace RasPiCam.AzureBlob
 {
-    internal interface IBlobEnumerator
+    public interface IBlobEnumerator
     {
         IEnumerable<IVideo> Videos();
     }

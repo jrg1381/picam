@@ -17,6 +17,11 @@ namespace RasPiCam.Controllers
             m_blobEnumerator = BlobEnumeratorFactory.CreateInstance();
         }
 
+        public VideoApiController(IBlobEnumerator blobEnumerator)
+        {
+            m_blobEnumerator = blobEnumerator;
+        }
+
         [AcceptVerbs("GET")]
         public JsonResult<IEnumerable<IVideo>> Videos()
         {
