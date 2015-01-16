@@ -4,38 +4,51 @@
 }
 
 <script>
-    function drawTable(data) {
+    function drawTable(data, tableId) {
         for (var i = 0; i < data.length; i++) {
-            drawRow(data[i]);
+            drawRow(data[i], tableId);
         }
     }
 
-    function drawRow(rowData) {
+    function drawRow(rowData, tableId) {
         var row = $("<tr />");
-        $("#video-table").append(row);
+        $(tableId).append(row);
         row.append($("<td>" + "<a href=\"" + rowData.Url + "\">" + rowData.Filename + "</a>" + "</td>"));
         row.append($("<td>" + rowData.Size + "</td>"));
         row.append($("<td>" + rowData.Timestamp + "</td>"));
     }
 
-    $(document).ready(function() {
+    function populateTable(data, tableId) {
+        data.sort(function (a, b) {
+            return (a["Timestamp"] > b["Timestamp"]) ? 1 : ((a["Timestamp"] < b["Timestamp"]) ? -1 : 0);
+        });
+        drawTable(data, tableId);
+    }
+
+    $(document).ready(function () {
         $.ajax({
-            url: "/api/VideoApi/Videos",
+            url: "/api/VideoApi/Videos?start=16%20January%202015&end=17%20January%202015",
             success: function (data) {
-                data.sort(function(a, b) {
-                    return (a["Timestamp"] > b["Timestamp"]) ? 1 : ((a["Timestamp"] < b["Timestamp"]) ? -1 : 0);
-                });
-                drawTable(data);
+                populateTable(data, "#recent-video-table");
             }
         });
     });
 </script>
 
-<table id="video-table" class="table">
+<table id="recent-video-table" class="table">
     <tr>
         <td>Filename</td>
         <td>Size</td>
         <td>Timestamp</td>
     </tr>
     <tr/>
+</table>
+
+<table id="older-video-table" class="table">
+    <tr>
+        <td>Filename</td>
+        <td>Size</td>
+        <td>Timestamp</td>
+    </tr>
+    <tr />
 </table>
