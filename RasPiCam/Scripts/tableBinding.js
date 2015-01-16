@@ -10,6 +10,7 @@ function drawRow(rowData, tableId, timeStampFormat) {
     row.append($("<td>" + "<a href=\"/Video/" + rowData.Id + "\">" + rowData.Filename + "</a>" + "</td>"));
     row.append($("<td>" + rowData.Size + "</td>"));
     row.append($("<td>" + moment(rowData.Timestamp).format(timeStampFormat) + "</td>"));
+    row.append($("<td><a href=\"" + rowData.Url + "\">Link</a></td>"));
 }
 
 function populateTable(data, tableId, timeStampFormat) {
