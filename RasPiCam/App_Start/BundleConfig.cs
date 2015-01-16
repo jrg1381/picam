@@ -8,7 +8,9 @@ namespace RasPiCam
         {
             bundles.Add(new ScriptBundle("~/bundles/ui")
                 .Include("~/Scripts/jquery-{version}.js")
-                .Include("~/Scripts/bootstrap.js"));
+                .Include("~/Scripts/bootstrap.js")
+                .Include("~/Scripts/tableBinding.js")
+                .Include("~/Scripts/moment.js"));
         }
     }
 }

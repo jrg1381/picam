@@ -29,9 +29,12 @@ namespace RasPiCam.Controllers
         }
 
         [AcceptVerbs("GET")]
-        public JsonResult<IEnumerable<IVideo>> Videos(DateTime start, DateTime end)
+        public JsonResult<IEnumerable<IVideo>> Videos(int start, int end)
         {
-            return Json(m_blobEnumerator.Videos().Where(v => v.Timestamp >= start && v.Timestamp <= end));
+            var startTime = Conversions.UnixTimestampToDateTime(start);
+            var endTime = Conversions.UnixTimestampToDateTime(end);
+
+            return Json(m_blobEnumerator.Videos().Where(v => v.Timestamp >= startTime && v.Timestamp <= endTime));
         }
     }
 }

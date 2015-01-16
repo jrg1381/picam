@@ -4,36 +4,27 @@
 }
 
 <script>
-    function drawTable(data, tableId) {
-        for (var i = 0; i < data.length; i++) {
-            drawRow(data[i], tableId);
-        }
-    }
-
-    function drawRow(rowData, tableId) {
-        var row = $("<tr />");
-        $(tableId).append(row);
-        row.append($("<td>" + "<a href=\"/Video/" + rowData.Id + "\">" + rowData.Filename + "</a>" + "</td>"));
-        row.append($("<td>" + rowData.Size + "</td>"));
-        row.append($("<td>" + rowData.Timestamp + "</td>"));
-    }
-
-    function populateTable(data, tableId) {
-        data.sort(function (a, b) {
-            return (a["Timestamp"] > b["Timestamp"]) ? 1 : ((a["Timestamp"] < b["Timestamp"]) ? -1 : 0);
-        });
-        drawTable(data, tableId);
-    }
-
     $(document).ready(function () {
+        var startOfToday = moment().startOf('day').format('X');
+        var end = moment().add(1, 'days').startOf('day').format('X');
+
         $.ajax({
-            url: "/api/VideoApi/Videos?start=16%20January%202015&end=17%20January%202015",
+            url: "/api/VideoApi/Videos?start=" + startOfToday + "&end=" + end,
             success: function (data) {
-                populateTable(data, "#recent-video-table");
+                populateTable(data, "#recent-video-table", "HH:mm:ss");
+            }
+        });
+
+        $.ajax({
+            url: "/api/VideoApi/Videos?start=0&end=" + startOfToday,
+            success: function (data) {
+                populateTable(data, "#older-video-table", "dddd Do MMMM, HH:mm:ss");
             }
         });
     });
 </script>
+
+<h2>Today's data</h2>
 
 <table id="recent-video-table" class="table">
     <tr>
@@ -43,6 +34,8 @@
     </tr>
     <tr/>
 </table>
+
+<h2>Older data</h2>
 
 <table id="older-video-table" class="table">
     <tr>
