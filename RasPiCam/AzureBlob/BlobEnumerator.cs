@@ -30,7 +30,7 @@ namespace RasPiCam.AzureBlob
             {
                 var blockBlob = item as CloudBlockBlob;
                 if (blockBlob == null) continue;
-                videosFound.Add(new Video(blockBlob.Name, blockBlob.Properties.Length, TemporaryUrlForBlob(blockBlob.Name)));
+                videosFound.Add(new Video(blockBlob.Name, blockBlob.Properties.Length, blockBlob.Metadata));
             }
 
             return videosFound;

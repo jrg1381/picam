@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.WindowsAzure;
+using RasPiCam.AzureBlob;
 using RasPiCam.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -21,7 +23,9 @@ namespace RasPiCam.Controllers
 
         public ActionResult Video(string id)
         {
-            return Redirect("/");
+            var realName = Conversions.Base64ToUtf8String(id);
+            var blobEnumerator = BlobEnumeratorFactory.CreateInstance();
+            return Redirect(blobEnumerator.TemporaryUrlForBlob(realName).ToString());
         }
     }
 }

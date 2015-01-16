@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Security.Permissions;
 using System.Text;
+using RasPiCam.Controllers;
 
 namespace RasPiCam.Models
 {
@@ -12,17 +13,22 @@ namespace RasPiCam.Models
         private readonly string m_name;
         private readonly long m_filesize;
         private readonly DateTime m_timestamp;
-        private readonly Uri m_url;
-        private readonly string m_id;
+        private readonly string m_encodedFilename;
+        private readonly IDictionary<string,string> m_metadata;
 
-        public Video(string name, long filesize, Uri url)
+        public Video(string name, long filesize, IDictionary<string,string> metadata)
         {
             m_name = name;
             m_filesize = filesize;
             var timestampText = name.Substring(name.IndexOf('-') + 1, 14);
             m_timestamp = DateTime.ParseExact(timestampText, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
-            m_url = url;
-            m_id = timestampText;
+            m_metadata = metadata;
+            m_encodedFilename = Conversions.Utf8StringToBase64(m_name);
+        }
+
+        public string EncodedFilename
+        {
+            get { return m_encodedFilename; }
         }
 
         public string Filename
@@ -40,14 +46,9 @@ namespace RasPiCam.Models
             get { return m_timestamp; }
         }
 
-        public Uri Url
+        public IDictionary<string,string> Metadata
         {
-            get { return m_url; }
-        }
-
-        public string Id
-        {
-            get { return m_id; }
+            get { return m_metadata; }
         }
     }
 }
