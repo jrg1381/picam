@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
@@ -29,10 +30,28 @@ namespace RasPiCam.AzureBlob
             {
                 var blockBlob = item as CloudBlockBlob;
                 if (blockBlob == null) continue;
-                videosFound.Add(new Video(blockBlob.Name, blockBlob.Properties.Length, blockBlob.SnapshotQualifiedUri));
+                videosFound.Add(new Video(blockBlob.Name, blockBlob.Properties.Length, TemporaryUrlForBlob(blockBlob.Name)));
             }
 
             return videosFound;
+        }
+
+        public Uri TemporaryUrlForBlob(string name)
+        {
+            var blobClient = m_storageAccount.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference(c_blobContainer);
+
+            var blob = container.GetBlobReferenceFromServer(name);
+
+            var policy = new SharedAccessBlobPolicy
+            {
+                Permissions = SharedAccessBlobPermissions.Read,
+                SharedAccessExpiryTime = DateTime.Now.AddMinutes(1)
+            };
+
+            var signature = blob.GetSharedAccessSignature(policy);
+
+            return new Uri(blob.Uri, signature);
         }
     }
 }
