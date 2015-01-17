@@ -8,6 +8,7 @@ using RasPiCam.AzureBlob;
 
 namespace RasPiCam.Controllers
 {
+    [Authorize]
     public class VideoApiController : ApiController
     {
         private readonly IBlobEnumerator m_blobEnumerator;
@@ -23,14 +24,14 @@ namespace RasPiCam.Controllers
         }
 
         [AcceptVerbs("GET")]
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public JsonResult<IEnumerable<IVideo>> Videos()
         {
             return Json(m_blobEnumerator.Videos());
         }
 
         [AcceptVerbs("GET")]
-        [System.Web.Mvc.Authorize]
+        [Authorize]
         public JsonResult<IEnumerable<IVideo>> Videos(int start, int end)
         {
             var startTime = Conversions.UnixTimestampToDateTime(start);
