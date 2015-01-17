@@ -24,9 +24,38 @@
     </nav>
 
     <div class="container">
-        <h2>Foo</h2>
-        @RenderBody()
+        <h2>foo</h2>
+        @if (!@User.Identity.IsAuthenticated)
+        {
+            <div class="col-lg-6">
+                <div class="well">
+                    <form class="form-horizontal" action="Account/Login" method="post">
+                        <fieldset>
+                            <legend>You must be logged in to access this data</legend>
+                            <div class="form-group">
+                                <label for="username" class="col-lg-2 control-label">Username</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="username" name="username"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-lg-2 control-label">Password</label>
+                                <div class="col-lg-10">
+                                    <input type="password" class="form-control" id="password" name="password"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-lg-offset-10">
+                                <button type="submit" class="btn btn-primary">Log in</button>
+                            </div>
+                            @AntiForgery.GetHtml()
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        }
     </div>
-
+    <div class="container">
+                @RenderBody()
+    </div>
 </body>
 </html>

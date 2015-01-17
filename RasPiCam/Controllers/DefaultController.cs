@@ -21,6 +21,7 @@ namespace RasPiCam.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Video(string id)
         {
             var realName = Conversions.Base64ToUtf8String(id);

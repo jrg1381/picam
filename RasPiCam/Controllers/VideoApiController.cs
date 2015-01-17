@@ -29,6 +29,7 @@ namespace RasPiCam.Controllers
         }
 
         [AcceptVerbs("GET")]
+        [System.Web.Mvc.Authorize]
         public JsonResult<IEnumerable<IVideo>> Videos(int start, int end)
         {
             var startTime = Conversions.UnixTimestampToDateTime(start);

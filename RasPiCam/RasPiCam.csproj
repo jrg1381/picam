@@ -160,6 +160,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AzureBlob\BlobEnumerator.cs" />
     <Compile Include="AzureBlob\BlobEnumeratorFactory.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Conversions.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="AzureBlob\IBlobEnumerator.cs" />
