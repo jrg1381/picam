@@ -24,14 +24,12 @@ namespace RasPiCam.Controllers
         }
 
         [AcceptVerbs("GET")]
-        [Authorize]
         public JsonResult<IEnumerable<IVideo>> Videos()
         {
             return Json(m_blobEnumerator.Videos());
         }
 
         [AcceptVerbs("GET")]
-        [Authorize]
         public JsonResult<IEnumerable<IVideo>> Videos(int start, int end)
         {
             var startTime = Conversions.UnixTimestampToDateTime(start);
