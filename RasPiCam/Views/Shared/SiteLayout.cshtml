@@ -20,6 +20,16 @@
             <div class="navbar-header">
                 <a href="" class="navbar-brand">PiCam</a>
             </div>
+            <div class="navbar-collapse">
+                @if (@User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            @Html.ActionLink("Log out", "Logout", "Account")
+                        </li>
+                    </ul>
+                }
+            </div>
         </div>
     </nav>
 
