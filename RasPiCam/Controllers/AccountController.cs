@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Providers;
 using System.Web.Security;
 
 namespace RasPiCam.Controllers
@@ -18,6 +19,11 @@ namespace RasPiCam.Controllers
             {
                 FormsAuthentication.SetAuthCookie(username, false);
             }
+
+            MembershipCreateStatus x = new MembershipCreateStatus();
+            var guid = Guid.NewGuid();
+            Membership.CreateUser(username, password, "nobody@example.com", null, null, true, guid, out x);
+
             return RedirectToAction("Index", "Default");
         }
 
