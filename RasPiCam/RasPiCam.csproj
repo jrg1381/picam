@@ -174,6 +174,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="AzureBlob\IBlobEnumerator.cs" />
     <Compile Include="AzureBlob\MockBlobEnumerator.cs" />
+    <Compile Include="Controllers\ResultWithException.cs" />
     <Compile Include="Controllers\VideoApiController.cs" />
     <Compile Include="Models\IVideo.cs" />
     <Compile Include="Models\Video.cs" />

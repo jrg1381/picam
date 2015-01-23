@@ -24,5 +24,9 @@ namespace RasPiCam.AzureBlob
         {
             return new Uri("http://foo/" + name);
         }
+
+        public void Delete(string id)
+        {
+        }
     }
 }

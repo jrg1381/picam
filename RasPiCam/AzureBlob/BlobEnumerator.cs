@@ -53,5 +53,14 @@ namespace RasPiCam.AzureBlob
 
             return new Uri(blob.Uri, signature);
         }
+
+        public void Delete(string name)
+        {
+                var blobClient = m_storageAccount.CreateCloudBlobClient();
+                var container = blobClient.GetContainerReference(c_blobContainer);
+
+                var blob = container.GetBlobReferenceFromServer(name);
+                blob.Delete();
+        }
     }
 }

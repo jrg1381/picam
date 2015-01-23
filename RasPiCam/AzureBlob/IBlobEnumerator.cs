@@ -8,5 +8,7 @@ namespace RasPiCam.AzureBlob
     {
         IEnumerable<IVideo> Videos();
         Uri TemporaryUrlForBlob(string name);
+
+        void Delete(string id);
     }
 }
