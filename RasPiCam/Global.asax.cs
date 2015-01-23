@@ -21,7 +21,9 @@ namespace RasPiCam
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+#if !DEBUG
             GlobalFilters.Filters.Add(new RequireHttpsAttribute());
+#endif
             FormsAuthentication.Initialize();
         }
     }
