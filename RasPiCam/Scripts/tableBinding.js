@@ -7,10 +7,12 @@
 function deleteVideo(id) {
     $.ajax({
         url: "/api/VideoApi/Delete",
-        data : { name : id, foo : "foo" },
+        data : { name : id },
         type : "post",
         success: function (data) {
-            alert(data.success);
+            if (!data.Result) {
+                alert(data.ExceptionMessage);
+            }
         }
     });
 }
@@ -18,10 +20,10 @@ function deleteVideo(id) {
 function drawRow(rowData, tableId, timeStampFormat) {
     var row = $("<tr />");
     $(tableId).append(row);
-    row.append($("<td>" + rowData.Size + "</td>"));
-    row.append($("<td>" + moment(rowData.Timestamp).format(timeStampFormat) + "</td>"));
-    row.append($("<td>" + "<a class=\"btn btn-default\" href=\"/Default/Video/" + rowData.EncodedFilename + "\">Download</a>" + "</td>"));
-    row.append($("<td>" + "<a class=\"btn btn-default\" href=\"javascript:deleteVideo('" + rowData.EncodedFilename + "')\">Delete</a>" + "</td>"));
+    row.append($("<td width=\"10%\">" + rowData.Size + "</td>"));
+    row.append($("<td width=\"60%\">" + moment(rowData.Timestamp).format(timeStampFormat) + "</td>"));
+    row.append($("<td>" + "<a class=\"btn btn-default \" href=\"/Default/Video/" + rowData.EncodedFilename + "\">Download</a>&nbsp;" +
+        "<a class=\"btn btn-default \" href=\"javascript:deleteVideo('" + rowData.EncodedFilename + "')\">Delete</a>" + "</td>"));
 }
 
 function populateTable(data, tableId, timeStampFormat) {

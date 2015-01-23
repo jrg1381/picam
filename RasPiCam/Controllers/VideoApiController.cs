@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Mvc;
@@ -39,19 +40,25 @@ namespace RasPiCam.Controllers
             return Json(m_blobEnumerator.Videos().Where(v => v.Timestamp >= startTime && v.Timestamp <= endTime));
         }
 
-        [System.Web.Mvc.AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult<ResultWithException> Delete(string name)
+        [System.Web.Http.HttpPost]
+        public JsonResult<ResultWithException> Delete(FormModel model)
         {
             try
             {
-                var realName = Conversions.Base64ToUtf8String(name);
+               // var name = collection["name"];
+                var realName = Conversions.Base64ToUtf8String(model.Name);
                 m_blobEnumerator.Delete(realName);
-                return Json(new ResultWithException { Result = true, Exception = null });
+                return Json(ResultWithException.Success);
             }
             catch (Exception e)
             {
-                return Json(new ResultWithException { Result = false, Exception = e });
+                return Json(new ResultWithException(e));
             }
         }
+    }
+
+    public class FormModel
+    {
+       public string Name { get; set; }
     }
 }
