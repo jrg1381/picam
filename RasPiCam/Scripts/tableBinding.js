@@ -12,17 +12,19 @@ function deleteVideo(id) {
         success: function (data) {
             if (!data.Result) {
                 alert(data.ExceptionMessage);
+            } else {
+                $("tr#" + id).remove(); // Better than querying the blob again
             }
         }
     });
 }
 
 function drawRow(rowData, tableId, timeStampFormat) {
-    var row = $("<tr />");
+    var row = $("<tr id=\"" + rowData.EncodedFilename + "\"/>");
     $(tableId).append(row);
     row.append($("<td width=\"10%\">" + rowData.Size + "</td>"));
     row.append($("<td width=\"60%\">" + moment(rowData.Timestamp).format(timeStampFormat) + "</td>"));
-    row.append($("<td>" + "<a class=\"btn btn-default \" href=\"/Default/Video/" + rowData.EncodedFilename + "\">Download</a>&nbsp;" +
+    row.append($("<td><a class=\"btn btn-default \" href=\"/Default/Video/" + rowData.EncodedFilename + "\">Download</a>&nbsp;" +
         "<a class=\"btn btn-default \" href=\"javascript:deleteVideo('" + rowData.EncodedFilename + "')\">Delete</a>" + "</td>"));
 }
 
