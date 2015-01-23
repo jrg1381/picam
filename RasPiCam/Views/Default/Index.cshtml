@@ -13,14 +13,14 @@
             $.ajax({
                 url: "/api/VideoApi/Videos?start=" + startOfToday + "&end=" + end,
                 success: function (data) {
-                    populateTable(data, "#recent-video-table", "HH:mm:ss");
+                    populateTable(data, "recent-video-table", "HH:mm:ss");
                 }
             });
 
             $.ajax({
                 url: "/api/VideoApi/Videos?start=0&end=" + startOfToday,
                 success: function (data) {
-                    populateTable(data, "#older-video-table", "dddd Do MMMM, HH:mm:ss");
+                    populateTable(data, "older-video-table", "dddd Do MMMM, HH:mm:ss");
                 }
             });
         });
