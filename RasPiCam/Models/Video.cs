@@ -15,12 +15,11 @@ namespace RasPiCam.Models
         private readonly string m_encodedFilename;
         private readonly IDictionary<string,string> m_metadata;
 
-        public Video(string name, long filesize, IDictionary<string,string> metadata)
+        public Video(string name, long filesize, IDictionary<string,string> metadata, DateTime lastModifiedUtc)
         {
             m_filesize = filesize;
-            var timestampText = name.Substring(name.IndexOf('-') + 1, 14);
-            m_timestamp = DateTime.ParseExact(timestampText, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
             m_metadata = metadata;
+            m_timestamp = lastModifiedUtc;
             m_encodedFilename = Conversions.Utf8StringToBase64(name);
         }
 
