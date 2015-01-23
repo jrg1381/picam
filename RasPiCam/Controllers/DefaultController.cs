@@ -5,6 +5,18 @@ namespace RasPiCam.Controllers
 {
     public class DefaultController : Controller
     {
+        private readonly IBlobEnumerator m_blobEnumerator;
+
+        public DefaultController()
+        {
+            m_blobEnumerator = BlobEnumeratorFactory.CreateInstance();
+        }
+
+        public DefaultController(IBlobEnumerator blobEnumerator)
+        {
+            m_blobEnumerator = blobEnumerator;
+        }
+
         // GET: Default
         public ActionResult Index()
         {
@@ -15,8 +27,7 @@ namespace RasPiCam.Controllers
         public ActionResult Video(string id)
         {
             var realName = Conversions.Base64ToUtf8String(id);
-            var blobEnumerator = BlobEnumeratorFactory.CreateInstance();
-            return Redirect(blobEnumerator.TemporaryUrlForBlob(realName).ToString());
+            return Redirect(m_blobEnumerator.TemporaryUrlForBlob(realName).ToString());
         }
     }
 }
