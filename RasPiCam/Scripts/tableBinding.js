@@ -10,11 +10,14 @@ function deleteVideo(id, rowId) {
         data : { name : id },
         type : "post",
         success: function (data) {
-            if (!data.Result) {
-                alert(data.ExceptionMessage);
-            } else {
+            if (data.Result) {
                 $("tr#" + rowId).remove(); // Better than querying the blob again
+            } else {
+                alert(data.ExceptionMessage);
             }
+        },
+        error: function(jqXhr, textStatus, errorThrown) {
+            alert(textStatus);
         }
     });
 }
