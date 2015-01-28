@@ -37,9 +37,39 @@
         <h2>foo</h2>
         @if (!@User.Identity.IsAuthenticated)
         {
+            <script>
+                function displayError(message) {
+                    var errorBox = $("div#error-box");
+                    $("div#error-box-text").text(message);
+                    errorBox.show();
+                }             
+
+                $(document).ready(function () {
+                    $("div#error-box").hide();
+
+                    $("#login").click(function() {
+                        $.ajax({
+                            url: "/Account/Login",
+                            type: "post",
+                            data: { username: $('[name=username]').val(), password: $('[name=password]').val(), "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() },
+                            success: function(data) {
+                                if (data.Result) {
+                                    location.reload(true);
+                                } else {
+                                    displayError(data.ExceptionMessage);
+                                }
+                            },
+                            error: function (jqXhr, textStatus, errorThrown) {
+                                displayError(errorThrown);
+                            }
+                        });
+                    });
+                });
+            </script>
+
             <div class="col-lg-6">
                 <div class="well">
-                    <form class="form-horizontal" action="Account/Login" method="post">
+                    <form class="form-horizontal" method="post">
                         <fieldset>
                             <legend>You must be logged in to access this data</legend>
                             <div class="form-group">
@@ -54,8 +84,11 @@
                                     <input type="password" class="form-control" id="password" name="password"/>
                                 </div>
                             </div>
+                            <div id="error-box">
+                                    <div class="alert alert-warning col-lg-10 col-lg-offset-2" id="error-box-text"></div>
+                            </div>
                             <div class="col-lg-10 col-lg-offset-10">
-                                <button type="submit" class="btn btn-primary">Log in</button>
+                                <div class="btn btn-primary" id="login">Log in</div>
                             </div>
                             @AntiForgery.GetHtml()
                         </fieldset>

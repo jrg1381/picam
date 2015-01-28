@@ -4,6 +4,16 @@
     }
 }
 
+function appendErrorRow(rowId, title, message) {
+    var row = $("tr#" + rowId);
+    var errorId = "error-" + rowId;
+    row.after("<tr id=\"" + errorId + "\"><td colspan=\"3\"><div class=\"alert alert-danger col-md-12\"><strong>" + title + ":</strong> " + message + "</div></td></tr>");
+    $("tr#" + errorId).click(function(sender) {
+        $("tr#" + errorId).remove();
+    });
+
+}
+
 function deleteVideo(id, rowId) {
     $.ajax({
         url: "/api/VideoApi/Delete",
@@ -13,23 +23,34 @@ function deleteVideo(id, rowId) {
             if (data.Result) {
                 $("tr#" + rowId).remove(); // Better than querying the blob again
             } else {
-                alert(data.ExceptionMessage);
+                appendErrorRow(rowId, data.ExceptionClass, data.ExceptionMessage);
             }
         },
-        error: function(jqXhr, textStatus, errorThrown) {
-            alert(textStatus);
+        error: function (jqXhr, textStatus, errorThrown) {
+            appendErrorRow(rowId, "Error", textStatus);
         }
     });
 }
 
 function drawRow(rowData, tableId, timeStampFormat, rowId) {
     var id = tableId + "-" + rowId;
+    var downloadId = "download-" + id;
+    var deleteId = "delete-" + id;
+
     var row = $("<tr id=\"" + id + "\"/>");
     $("#" + tableId).append(row);
     row.append($("<td width=\"10%\">" + rowData.Size + "</td>"));
     row.append($("<td width=\"60%\">" + moment(rowData.Timestamp).format(timeStampFormat) + "</td>"));
-    row.append($("<td><a class=\"btn btn-default \" href=\"/Default/Video/" + rowData.EncodedFilename + "\">Download</a>&nbsp;" +
-        "<a class=\"btn btn-default \" href=\"javascript:deleteVideo('" + rowData.EncodedFilename + "','" + id + "')\">Delete</a>" + "</td>"));
+    row.append($("<td><div class=\"btn btn-default\" id=\""+ downloadId + "\">Download</div>&nbsp;" +
+        "<div class=\"btn btn-default\" id=\"" + deleteId + "\">Delete</div>" + "</td>"));
+
+    $("div#" + downloadId).click(function() {
+        document.location = "/Default/Video/" + rowData.EncodedFilename;
+    });
+
+    $("div#" + deleteId).click(function () {
+        deleteVideo(rowData.EncodedFilename, id);
+    });
 }
 
 function populateTable(data, tableId, timeStampFormat) {

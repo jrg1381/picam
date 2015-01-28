@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -11,14 +12,14 @@ namespace RasPiCam.Controllers
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string username, string password)
+        public JsonResult Login(string username, string password)
         {
-            // TODO: return JSON to help the client render a useful response
             if (Membership.ValidateUser(username, password))
             {
                 FormsAuthentication.SetAuthCookie(username, false);
+                return Json(ResultWithException.Success);
             }
-            return RedirectToAction("Index", "Default");
+            return Json(new ResultWithException(new SecurityException("Incorrect username or password")));
         }
 
         public ActionResult Logout()
