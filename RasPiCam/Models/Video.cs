@@ -13,12 +13,12 @@ namespace RasPiCam.Models
         private readonly long m_filesize;
         private readonly DateTime m_timestamp;
         private readonly string m_encodedFilename;
-        private readonly IDictionary<string,string> m_metadata;
+        private readonly Dictionary<string,string> m_metadata;
 
         public Video(string name, long filesize, IDictionary<string,string> metadata, DateTime lastModifiedUtc)
         {
             m_filesize = filesize;
-            m_metadata = metadata;
+            m_metadata = new Dictionary<string, string>(metadata);
             m_timestamp = lastModifiedUtc;
             m_encodedFilename = Conversions.Utf8StringToBase64(name);
         }
