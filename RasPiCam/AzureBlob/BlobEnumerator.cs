@@ -26,7 +26,7 @@ namespace RasPiCam.AzureBlob
             var blobClient = m_storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference(c_blobContainer);
 
-            foreach (IListBlobItem item in container.ListBlobs(null, false))
+            foreach (IListBlobItem item in container.ListBlobs(null, false, BlobListingDetails.Metadata|BlobListingDetails.Snapshots))
             {
                 var blockBlob = item as CloudBlockBlob;
                 if (blockBlob == null) continue;
