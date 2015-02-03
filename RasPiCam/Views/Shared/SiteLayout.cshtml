@@ -44,26 +44,39 @@
                     errorBox.show();
                 }             
 
+                function submitForm() {
+                    $.ajax({
+                        url: "/Account/Login",
+                        type: "post",
+                        data: {
+                            username: $('[name=username]').val(),
+                            password: $('[name=password]').val(),
+                            "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val()
+                        },
+                        success: function (data) {
+                            if (data.Result) {
+                                location.reload(true);
+                            } else {
+                                displayError(data.ExceptionMessage);
+                            }
+                        },
+                        error: function (jqXhr, textStatus, errorThrown) {
+                            displayError(errorThrown);
+                        }
+                    });
+                }
+
                 $(document).ready(function () {
                     $("div#error-box").hide();
 
-                    $("#login").click(function() {
-                        $.ajax({
-                            url: "/Account/Login",
-                            type: "post",
-                            data: { username: $('[name=username]').val(), password: $('[name=password]').val(), "__RequestVerificationToken": $('[name=__RequestVerificationToken]').val() },
-                            success: function(data) {
-                                if (data.Result) {
-                                    location.reload(true);
-                                } else {
-                                    displayError(data.ExceptionMessage);
-                                }
-                            },
-                            error: function (jqXhr, textStatus, errorThrown) {
-                                displayError(errorThrown);
-                            }
-                        });
+                    $("#password").keypress(function (e) {
+                        if (e.which == 13) {
+                            submitForm();
+                            return false;
+                        }
                     });
+
+                    $("#login").click(submitForm);
                 });
             </script>
 
