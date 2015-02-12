@@ -2,6 +2,7 @@ using System;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Newtonsoft.Json;
 
 namespace ProcessVideos
 {
@@ -19,10 +20,10 @@ namespace ProcessVideos
             m_blob = container.GetBlobReferenceFromServer(blobName);
         }
 
-        public string this[string key]
+        public object this[string key]
         {
             get { return m_blob.Metadata[key]; }
-            set { m_blob.Metadata[key] = value; }
+            set { m_blob.Metadata[key] = JsonConvert.SerializeObject(value); }
         }
 
         public void Dispose()

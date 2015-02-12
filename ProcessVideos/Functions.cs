@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,19 @@ namespace ProcessVideos
         {
             using (var meta = new MetadataModifier(name))
             {
-                meta["processed"] = JsonConvert.SerializeObject(true);
+                meta["processed"] = true;
+                meta["lastModified"] = LastModifiedTimeUtc(name);
             }
+        }
+
+        private static DateTime LastModifiedTimeUtc(string blobName)
+        {
+            var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference(MetadataModifier.BlobContainer);
+            var blob = container.GetBlobReferenceFromServer(blobName);
+            return blob.Properties.LastModified.HasValue ? blob.Properties.LastModified.Value.UtcDateTime : DateTime.MinValue;
         }
     }
 }

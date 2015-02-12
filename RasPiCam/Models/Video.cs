@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Security.Permissions;
 using System.Text;
+using System.Web.Helpers;
+using Newtonsoft.Json;
 using RasPiCam.Controllers;
 
 namespace RasPiCam.Models
@@ -35,7 +37,14 @@ namespace RasPiCam.Models
 
         public DateTime Timestamp
         {
-            get { return m_timestamp; }
+            get
+            {
+                if (m_metadata.ContainsKey("lastModified"))
+                {
+                    return JsonConvert.DeserializeObject<DateTime>(m_metadata["lastModified"]);
+                }
+                return m_timestamp;
+            }
         }
 
         public IDictionary<string,string> Metadata
