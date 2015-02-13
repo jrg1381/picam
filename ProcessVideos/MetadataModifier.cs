@@ -22,8 +22,14 @@ namespace ProcessVideos
 
         public object this[string key]
         {
-            get { return JsonConvert.DeserializeObject(m_blob.Metadata[key]); }
-            set { m_blob.Metadata[key] = JsonConvert.SerializeObject(value); }
+            get
+            {
+                return m_blob.Metadata.ContainsKey(key) ? JsonConvert.DeserializeObject(m_blob.Metadata[key]) : null;
+            }
+            set
+            {
+                m_blob.Metadata[key] = JsonConvert.SerializeObject(value);
+            }
         }
 
         public void Dispose()
