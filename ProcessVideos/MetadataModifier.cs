@@ -22,7 +22,7 @@ namespace ProcessVideos
 
         public object this[string key]
         {
-            get { return m_blob.Metadata[key]; }
+            get { return JsonConvert.DeserializeObject(m_blob.Metadata[key]); }
             set { m_blob.Metadata[key] = JsonConvert.SerializeObject(value); }
         }
 

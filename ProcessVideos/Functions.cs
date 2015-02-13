@@ -19,6 +19,8 @@ namespace ProcessVideos
         {
             using (var meta = new MetadataModifier(name))
             {
+                if (meta["processed"] != null && (bool)meta["processed"]) return;
+
                 meta["processed"] = true;
                 meta["lastModified"] = LastModifiedTimeUtc(name);
             }
