@@ -10,7 +10,7 @@ namespace RasPiCam.AzureBlob
 {
     class BlobEnumerator : IBlobEnumerator
     {
-        private const string c_blobContainer = "data";
+        private const string c_blobContainer = "processeddata";
         private readonly CloudStorageAccount m_storageAccount;
 
         internal BlobEnumerator()
