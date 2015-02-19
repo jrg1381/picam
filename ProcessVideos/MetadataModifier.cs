@@ -10,6 +10,7 @@ namespace ProcessVideos
     {
         public const string BlobContainer = "data";
         private readonly ICloudBlob m_blob;
+        private bool m_wasModified;
 
         public MetadataModifier(string blobName)
         {
@@ -29,12 +30,14 @@ namespace ProcessVideos
             set
             {
                 m_blob.Metadata[key] = JsonConvert.SerializeObject(value);
+                m_wasModified = true;
             }
         }
 
         public void Dispose()
         {
-            m_blob.SetMetadata();
+            if(m_wasModified)
+                m_blob.SetMetadata();
         }
     }
 }
