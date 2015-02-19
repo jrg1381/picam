@@ -13,12 +13,12 @@ namespace ProcessVideos
         private readonly ICloudBlob m_blob;
         private bool m_wasModified;
 
-        public MetadataModifier(string blobName)
+        public MetadataModifier(string containerName, string blobName)
         {
             var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
             var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference(BlobContainerInput);
+            var container = blobClient.GetContainerReference(containerName);
             m_blob = container.GetBlobReferenceFromServer(blobName);
         }
 
