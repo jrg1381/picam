@@ -15,15 +15,45 @@ namespace ProcessVideos
     public class Functions
     {
         // This function will get triggered/executed when a new blob is uploaded
-        public static void ProcessQueueMessage([BlobTrigger(MetadataModifier.BlobContainer + "/{name}")] Stream blob, string name)
+        public static void ProcessQueueMessage([BlobTrigger(MetadataModifier.BlobContainerInput + "/{name}")] Stream blob, 
+            [Blob(MetadataModifier.BlobContainerOutput + "/{name}", FileAccess.Write)] Stream blobOutput,
+            string name)
         {
             using (var meta = new MetadataModifier(name))
             {
                 if (meta["processed"] != null && (bool)meta["processed"]) return;
 
+                try
+                {
+                    using (var mediaFile = new MediaInfoDotNet.MediaFile(blob))
+                    {
+                        var video = mediaFile.Video.First().Value;
+                        meta["duration"] = video.duration;
+                        meta["resolution"] = String.Format("{0}x{1}", video.width, video.height);
+                    }
+                }
+                catch (Exception e)
+                {
+                    meta["exception"] = e;
+                }
+
                 meta["processed"] = true;
                 meta["lastModified"] = LastModifiedTimeUtc(name);
             }
+
+            blob.CopyTo(blobOutput);
+            DeleteBlob(name);
+        }
+
+        private static void DeleteBlob(string blobName)
+        {
+            var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference(MetadataModifier.BlobContainerInput);
+
+            var blob = container.GetBlobReferenceFromServer(blobName);
+            blob.Delete();
         }
 
         private static DateTime LastModifiedTimeUtc(string blobName)
@@ -31,7 +61,7 @@ namespace ProcessVideos
             var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
             var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference(MetadataModifier.BlobContainer);
+            var container = blobClient.GetContainerReference(MetadataModifier.BlobContainerInput);
             var blob = container.GetBlobReferenceFromServer(blobName);
             return blob.Properties.LastModified.HasValue ? blob.Properties.LastModified.Value.UtcDateTime : DateTime.MinValue;
         }

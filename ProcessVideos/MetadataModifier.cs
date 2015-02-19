@@ -8,7 +8,8 @@ namespace ProcessVideos
 {
     class MetadataModifier : IDisposable
     {
-        public const string BlobContainer = "data";
+        public const string BlobContainerInput = "data";
+        public const string BlobContainerOutput = "processeddata";
         private readonly ICloudBlob m_blob;
         private bool m_wasModified;
 
@@ -17,7 +18,7 @@ namespace ProcessVideos
             var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
             var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference(BlobContainer);
+            var container = blobClient.GetContainerReference(BlobContainerInput);
             m_blob = container.GetBlobReferenceFromServer(blobName);
         }
 
