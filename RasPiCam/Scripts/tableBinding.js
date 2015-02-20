@@ -40,7 +40,7 @@ function drawRow(rowData, tableId, timeStampFormat, rowId) {
     var row = $("<tr id=\"" + id + "\"/>");
     $("#" + tableId).append(row);
     row.append($("<td width=\"10%\">" + rowData.Size + "</td>"));
-    row.append($("<td width=\"10%\">" + moment.duration(rowData.Metadata.duration).as("seconds") + " seconds</td>"));
+    row.append($("<td width=\"10%\">" + moment.duration(Number(rowData.Metadata.duration)).as("seconds") + " seconds</td>"));
     row.append($("<td width=\"60%\">" + moment(rowData.Timestamp).format(timeStampFormat) + "</td>"));
     row.append($("<td><div class=\"btn btn-default\" id=\""+ downloadId + "\">Download</div>&nbsp;" +
         "<div class=\"btn btn-default\" id=\"" + deleteId + "\">Delete</div>" + "</td>"));
