@@ -43,29 +43,29 @@ namespace ProcessVideos
                 }
 
                 meta["processed"] = true;
-                meta["lastModified"] = LastModifiedTimeUtc(name);
+                meta["lastModified"] = LastModifiedTimeUtc(MetadataModifier.BlobContainerInput, name);
             }
 
-            DeleteBlob(name);
+            DeleteBlob(MetadataModifier.BlobContainerInput, name);
         }
 
-        private static void DeleteBlob(string blobName)
+        private static void DeleteBlob(string containerName, string blobName)
         {
             var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
             var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference(MetadataModifier.BlobContainerInput);
+            var container = blobClient.GetContainerReference(containerName);
 
             var blob = container.GetBlobReferenceFromServer(blobName);
             blob.Delete();
         }
 
-        private static DateTime LastModifiedTimeUtc(string blobName)
+        private static DateTime LastModifiedTimeUtc(string containerName, string blobName)
         {
             var cloudStorageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
             var storageAccount = CloudStorageAccount.Parse(cloudStorageConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference(MetadataModifier.BlobContainerInput);
+            var container = blobClient.GetContainerReference(containerName);
             var blob = container.GetBlobReferenceFromServer(blobName);
             return blob.Properties.LastModified.HasValue ? blob.Properties.LastModified.Value.UtcDateTime : DateTime.MinValue;
         }
