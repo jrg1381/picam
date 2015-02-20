@@ -19,6 +19,11 @@ namespace ProcessVideos
             [Blob(MetadataModifier.BlobContainerOutput + "/{name}", FileAccess.Write)] Stream blobOutput,
             string name)
         {
+            blob.CopyTo(blobOutput);
+            blobOutput.Flush();
+            blobOutput.Close();
+            blob.Seek(0, SeekOrigin.Begin);
+
             using (var meta = new MetadataModifier(MetadataModifier.BlobContainerOutput, name))
             {
                 if (meta["processed"] != null && (bool) meta["processed"]) return;
@@ -41,8 +46,6 @@ namespace ProcessVideos
                 meta["lastModified"] = LastModifiedTimeUtc(name);
             }
 
-            blob.Seek(0, SeekOrigin.Begin);
-            blob.CopyTo(blobOutput);
             DeleteBlob(name);
         }
 
